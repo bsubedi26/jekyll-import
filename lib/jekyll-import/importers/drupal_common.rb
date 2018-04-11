@@ -17,6 +17,7 @@ module JekyllImport
           "host"     => "localhost",
           "prefix"   => "",
           "types"    => %w(blog story article),
+          "port"     => "3306",
         }.freeze
 
         def specify_options(c)
@@ -49,11 +50,12 @@ module JekyllImport
           host   = options.fetch("host",     DEFAULTS["host"])
           prefix = options.fetch("prefix",   DEFAULTS["prefix"])
           types  = options.fetch("types",    DEFAULTS["types"])
+          port   = options.fetch("port",     DEFAULTS["port"])
 
           if engine == "postgresql"
             db = Sequel.postgres(dbname, :user => user, :password => pass, :host => host, :encoding => "utf8")
           else
-            db = Sequel.mysql2(dbname, :user => user, :password => pass, :host => host, :encoding => "utf8")
+            db = Sequel.mysql2(dbname, :user => user, :password => pass, :host => host, :encoding => "utf8", :port => port)
           end
 
           query = self.build_query(prefix, types, engine)
